@@ -5,6 +5,17 @@ const el = (sel, root = document) => root.querySelector(sel);
 const els = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const SORT = { by: 'total', dir: 'asc' };
 
+function getLogoForName(modelName) {
+  const n = (modelName || '').toLowerCase();
+  if (n.includes('qwen')) return 'public/qwen-icon-seeklogo.png';
+  if (n.includes('llama')) return 'public/meta-icon-new-facebook-2021-logo-png_seeklogo-424014.png';
+  if (n.includes('deepseek')) return 'public/deepseek-ai-icon-seeklogo.png';
+  if (n.includes('devstral')) return 'public/mistral-ai-icon-logo-png_seeklogo-515008.png';
+  if (n.includes('gpt-oss')) return 'public/chatgpt-seeklogo.png';
+  if (n.includes('gemma')) return 'public/google-new-logo-png_seeklogo-622426.png';
+  return '';
+}
+
 function parseDurationToSeconds(raw) {
   if (!raw) return null;
   const s = String(raw).trim();
@@ -133,6 +144,14 @@ function createCard(model) {
   const tpl = el('#card-tpl');
   const node = tpl.content.firstElementChild.cloneNode(true);
   el('.model-name', node).textContent = model.name;
+  const logoEl = el('.model-logo', node);
+  const logoSrc = getLogoForName(model.name);
+  if (logoSrc) {
+    logoEl.src = logoSrc;
+    logoEl.alt = model.name;
+  } else {
+    logoEl.style.display = 'none';
+  }
   const badge = el('.badge', node);
   badge.textContent = model.correct ? 'Correct' : 'Incorrect';
   badge.classList.add(model.correct ? 'correct' : 'incorrect');
@@ -242,6 +261,26 @@ function renderCompare(models) {
     box.innerHTML = '<div class="empty">Pick two models to compare.</div>';
     return;
   }
+
+  // Identity chips
+  const ids = document.createElement('div');
+  ids.className = 'compare-ids';
+  const makeChip = (m) => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    const img = document.createElement('img');
+    const src = getLogoForName(m.name);
+    if (src) { img.src = src; img.alt = m.name; }
+    else { img.style.display = 'none'; }
+    const label = document.createElement('span');
+    label.textContent = m.name;
+    chip.appendChild(img);
+    chip.appendChild(label);
+    return chip;
+  };
+  ids.appendChild(makeChip(A));
+  ids.appendChild(makeChip(B));
+  box.appendChild(ids);
 
   const rows = [];
   rows.push(compareRow('Total duration', fmtSeconds(A.totalSeconds), fmtSeconds(B.totalSeconds), () => (A.totalSeconds ?? Infinity) - (B.totalSeconds ?? Infinity)));

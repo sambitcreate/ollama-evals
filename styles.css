@@ -91,6 +91,8 @@ select {
 
 .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .card-head h3 { margin: 0; font-size: 15px; }
+.model-id { display: inline-flex; align-items: center; gap: 8px; }
+.model-logo { width: 18px; height: 18px; border-radius: 4px; object-fit: contain; background: #fff; border: 1px solid var(--card-border); padding: 2px; }
 .badge {
   font-size: 11px;
   letter-spacing: 0.3px;
@@ -111,6 +113,11 @@ select {
 
 /* Compare */
 .compare { margin-top: 14px; }
+.compare-ids { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; margin: 12px 0; align-items: center; }
+.compare-ids .chip:first-child { justify-self: start; }
+.compare-ids .chip:last-child { justify-self: end; }
+.chip { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--card-border); background: #fff; border-radius: 999px; padding: 8px 16px; font-size: 24px; }
+.chip img { width: 32px; height: 32px; border-radius: 6px; object-fit: contain; }
 .compare-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
 }
