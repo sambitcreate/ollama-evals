@@ -3,6 +3,7 @@ const EXPECTED_ANSWER = 3600;
 
 const el = (sel, root = document) => root.querySelector(sel);
 const els = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const SORT = { by: 'total', dir: 'asc' };
 
 function parseDurationToSeconds(raw) {
   if (!raw) return null;
@@ -157,7 +158,30 @@ function renderGrid(models, filter = '') {
   const grid = el('#grid');
   grid.innerHTML = '';
   const q = filter.trim().toLowerCase();
-  const filtered = q ? models.filter(m => m.name.toLowerCase().includes(q)) : models;
+  let filtered = q ? models.filter(m => m.name.toLowerCase().includes(q)) : [...models];
+
+  // Sorting
+  const getVal = (m) => {
+    switch (SORT.by) {
+      case 'total': return m.totalSeconds;
+      case 'genDuration': return m.evalDurationSeconds;
+      case 'promptRate': return m.promptRate; // tokens/s
+      case 'evalRate': return m.evalRate; // tokens/s
+      case 'evalCount': return m.evalCount; // tokens
+      default: return m.totalSeconds;
+    }
+  };
+  filtered.sort((a, b) => {
+    const va = getVal(a);
+    const vb = getVal(b);
+    const na = (va == null || Number.isNaN(va));
+    const nb = (vb == null || Number.isNaN(vb));
+    if (na && nb) return 0;
+    if (na) return 1; // push nulls to end
+    if (nb) return -1;
+    const diff = va - vb;
+    return SORT.dir === 'asc' ? diff : -diff;
+  });
   el('#modelCount').textContent = `${filtered.length} of ${models.length}`;
   if (!filtered.length) {
     const empty = document.createElement('div');
@@ -242,6 +266,23 @@ function renderCompare(models) {
       renderGrid(models, e.target.value);
     });
     els('#modelA, #modelB').forEach(s => s.addEventListener('change', () => renderCompare(models)));
+
+    const sortBy = el('#sortBy');
+    const sortDirBtn = el('#sortDir');
+    if (sortBy) {
+      sortBy.addEventListener('change', () => {
+        SORT.by = sortBy.value;
+        renderGrid(models, el('#search').value || '');
+      });
+    }
+    if (sortDirBtn) {
+      sortDirBtn.addEventListener('click', () => {
+        SORT.dir = SORT.dir === 'asc' ? 'desc' : 'asc';
+        sortDirBtn.dataset.dir = SORT.dir;
+        sortDirBtn.textContent = SORT.dir === 'asc' ? 'Asc' : 'Desc';
+        renderGrid(models, el('#search').value || '');
+      });
+    }
   } catch (err) {
     const grid = el('#grid');
     grid.innerHTML = `<div class="card empty">${err.message}</div>`;

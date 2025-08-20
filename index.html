@@ -70,7 +70,18 @@
       <section>
         <div class="section-head">
           <h2>Models</h2>
-          <span id="modelCount" class="muted"></span>
+          <div class="section-actions">
+            <label class="muted" for="sortBy">Sort by</label>
+            <select id="sortBy" aria-label="Sort models">
+              <option value="total">Total duration</option>
+              <option value="genDuration">Generate duration</option>
+              <option value="promptRate">Prompt eval (tokens/s)</option>
+              <option value="evalRate">Generate eval (tokens/s)</option>
+              <option value="evalCount">Generate tokens</option>
+            </select>
+            <button id="sortDir" class="btn" type="button" aria-label="Toggle sort direction" data-dir="asc">Asc</button>
+            <span id="modelCount" class="muted"></span>
+          </div>
         </div>
         <div id="grid" class="grid"></div>
       </section>
