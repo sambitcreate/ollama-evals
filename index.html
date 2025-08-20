@@ -19,11 +19,15 @@
       </div>
       <div class="actions">
         <input id="search" type="search" placeholder="Search models…" aria-label="Search models" />
+        <div class="toggles" role="group" aria-label="View toggles">
+          <label class="toggle"><input type="checkbox" id="togglePrompt" /> Prompt</label>
+          <label class="toggle"><input type="checkbox" id="toggleCompare" checked /> Compare</label>
+        </div>
       </div>
     </header>
 
     <main class="container">
-      <section class="card prompt-card">
+      <section class="card prompt-card" id="promptSection" style="display:none">
         <h2>Prompt</h2>
         <pre class="prompt-text">
 > *Two trains are moving toward each other on parallel tracks. Train A 
@@ -52,7 +56,7 @@
 > ```
         </pre>
       </section>
-      <section class="controls card">
+      <section class="controls card" id="compareSection">
         <h2>Compare Models</h2>
         <div class="compare-controls">
           <div class="select-group">

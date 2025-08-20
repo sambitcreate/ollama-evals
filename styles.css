@@ -49,6 +49,12 @@ body {
 }
 .actions input::placeholder { color: #9aa0a6; }
 
+/* Header actions layout and toggles */
+.actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.toggles { display: inline-flex; gap: 8px; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--card-border); border-radius: 999px; background: #fff; color: var(--muted); font-size: 12px; }
+.toggle input { accent-color: var(--accent); }
+
 /* Layout */
 .container { max-width: 1150px; margin: 28px auto; padding: 0 20px; }
 .section-head { display: flex; align-items: center; justify-content: space-between; margin: 18px 6px; }
@@ -112,7 +118,7 @@ select {
 .metrics strong { font-weight: 600; font-size: 13px; }
 
 /* Compare */
-.compare { margin-top: 14px; }
+.compare { margin-top: 14px; display: grid; gap: 14px; }
 .compare-ids { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; margin: 12px 0; align-items: center; }
 .compare-ids .chip:first-child { justify-self: start; }
 .compare-ids .chip:last-child { justify-self: end; }
@@ -121,7 +127,7 @@ select {
 .compare-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
 }
-.kv { border: 1px solid var(--card-border); background: #f9fafb; border-radius: 10px; padding: 10px; }
+.kv { border: 1px solid var(--card-border); background: #f9fafb; border-radius: 10px; padding: 10px; display: grid; gap: 10px; }
 .kv h4 { margin: 0 0 8px; font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: 0.2px; }
 .kv-row { display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 8px; }
 .kv-row .label { color: var(--muted); font-size: 12px; }

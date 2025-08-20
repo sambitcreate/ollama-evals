@@ -219,8 +219,6 @@ function compareRow(label, aVal, bVal, betterFn) {
   const makeCell = (title, value) => {
     const box = document.createElement('div');
     box.className = 'kv';
-    const h = document.createElement('h4');
-    h.textContent = title;
     const row = document.createElement('div');
     row.className = 'kv-row';
     const lab = document.createElement('span');
@@ -230,7 +228,7 @@ function compareRow(label, aVal, bVal, betterFn) {
     val.className = 'value';
     val.textContent = value;
     row.appendChild(lab); row.appendChild(val);
-    box.appendChild(h); box.appendChild(row);
+    box.appendChild(row);
     return { box, row };
   };
 
@@ -322,6 +320,28 @@ function renderCompare(models) {
         renderGrid(models, el('#search').value || '');
       });
     }
+
+    // View toggles
+    const promptSection = el('#promptSection');
+    const compareSection = el('#compareSection');
+    const tPrompt = el('#togglePrompt');
+    const tCompare = el('#toggleCompare');
+    // restore
+    const pref = JSON.parse(localStorage.getItem('viewToggles') || '{}');
+    if (typeof pref.prompt === 'boolean') {
+      tPrompt.checked = pref.prompt;
+    }
+    if (typeof pref.compare === 'boolean') {
+      tCompare.checked = pref.compare;
+    }
+    const applyToggles = () => {
+      promptSection.style.display = tPrompt.checked ? '' : 'none';
+      compareSection.style.display = tCompare.checked ? '' : 'none';
+      localStorage.setItem('viewToggles', JSON.stringify({ prompt: tPrompt.checked, compare: tCompare.checked }));
+    };
+    tPrompt.addEventListener('change', applyToggles);
+    tCompare.addEventListener('change', applyToggles);
+    applyToggles();
   } catch (err) {
     const grid = el('#grid');
     grid.innerHTML = `<div class="card empty">${err.message}</div>`;
