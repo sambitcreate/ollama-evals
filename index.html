@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ollama Evals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="title">
+          <h1>Ollama Evals</h1>
+          <p class="subtitle">Tested on Mac Studio M2 Max 64Gb</p>
+        </div>
+      </div>
+      <div class="actions">
+        <input id="search" type="search" placeholder="Search models…" aria-label="Search models" />
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card prompt-card">
+        <h2>Prompt</h2>
+        <pre class="prompt-text">
+> *Two trains are moving toward each other on parallel tracks. Train A 
+> travels at 60 km/h, and Train B at 90 km/h. The initial distance between 
+> them is 150 km. How long (in seconds) will it take for the trains to 
+> meet?*  
+>   
+> **Requirements:**  
+> 1. Convert all speeds to **m/s** (meters per second) using:  
+>    `1 km/h = 1000/3600 m/s = 5/18 m/s`.  
+> 2. Calculate the **relative speed** (since they move toward each other). 
+>  
+> 3. Use the formula: `Time = Distance / Relative Speed`.  
+> 4. Convert the final answer to **seconds** (not hours or minutes).  
+> 5. Show every calculation step (no shortcuts).  
+>   
+> **Output Format:**  
+> ```  
+> Step 1: Convert Train A speed to m/s:  
+> [Your calculation]  
+> Step 2: Convert Train B speed to m/s:  
+> [Your calculation]  
+> Step 3: Relative speed = [A] + [B] = [result] m/s  
+> Step 4: Time (seconds) = [Distance in meters] / [Relative speed]  
+> Step 5: Final answer: [Number] seconds  
+> ```
+        </pre>
+      </section>
+      <section class="controls card">
+        <h2>Compare Models</h2>
+        <div class="compare-controls">
+          <div class="select-group">
+            <label for="modelA">Model A</label>
+            <select id="modelA"></select>
+          </div>
+          <div class="select-group">
+            <label for="modelB">Model B</label>
+            <select id="modelB"></select>
+          </div>
+        </div>
+        <div id="compare" class="compare card subtle"></div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Models</h2>
+          <span id="modelCount" class="muted"></span>
+        </div>
+        <div id="grid" class="grid"></div>
+      </section>
+    </main>
+
+    <template id="card-tpl">
+      <article class="card model-card">
+        <div class="card-head">
+          <h3 class="model-name"></h3>
+          <span class="badge"></span>
+        </div>
+        <p class="answer"></p>
+        <ul class="metrics">
+          <li><span>Total duration</span><strong class="total"></strong></li>
+          <li><span>Load duration</span><strong class="load"></strong></li>
+          <li><span>Prompt eval</span><strong class="prompt"></strong></li>
+          <li><span>Generate eval</span><strong class="gen"></strong></li>
+        </ul>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
